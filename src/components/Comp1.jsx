@@ -58,7 +58,7 @@ return (
    <Stack sx={{display:'grid',gridTemplateColumns:{xs:'repeat(2,1fr)',md:'repeat(3,1fr)'},gap:{xs:'1.5em',md:'2em'}}}>
     {
       cards.map(({id,icon,title,data,unit})=>(
-        <Stack key={id} sx={{backgroundImage:bg?'linear-gradient(to bottom right,black,#3d333c 60%)':'linear-gradient(to bottom right,#59fff4,#d9faf8 50%)',boxShadow:'2px 2px 10px 1px gray',widht:'fit-content',height:'fit-content',borderRadius:'1em',padding:'1em 1em',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
+        <Stack key={id} sx={{backgroundImage:bg?'linear-gradient(to bottom right,black,#3d333c 60%)':'linear-gradient(to bottom right,#59fff4,#d9faf8 50%)',boxShadow:'0px 0px 15px 0px gray',widht:'fit-content',height:'fit-content',borderRadius:'1em',padding:'1em 1em',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
         <Stack direction='row' spacing={0.8} sx={{display:'flex',flexDirection:'row',alignItems:'center'}}>
            {icon}
            <Typography sx={{fontFamily:'Fredoka',fontSize:'1.4rem',fontWeight:'bold'}}>{title}</Typography>

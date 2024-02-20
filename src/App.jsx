@@ -42,7 +42,7 @@ const App = () => {
     setBg(!bg)
   }
   return (
-    <Stack sx={{ width: '100%', backgroundColor: bg ? '#3d333c' : '#d9faf8', color: bg ? 'white' : 'black', height: { xs: 'fit-content' }, }}>
+    <Stack sx={{ width: '100%', backgroundColor: bg ? '#E5E5CB' : '#d9faf8', color: bg ? 'white' : 'black', height: { xs: 'fit-content' ,xl:'100vh'}, }}>
       {
         weather && (
           <Stack>
@@ -62,7 +62,7 @@ const App = () => {
             </Stack>
             <Stack sx={{ marginTop: '2em', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
               <Stack sx={{ width: { xs: '95%', sm: '70%', md: '80%' }, height: 'fit-content', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: { xs: '3em', md: '6em' }, alignItems: { md: 'center' } }}>
-                <Stack direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: bg ? 'linear-gradient(to bottom right,black,#3d333c 80%)' : 'linear-gradient(to bottom right,#59fff4,#d9faf8 50%)', padding: { xs: '2em 0em', sm: '3em 0em', md: '5em 6em' }, borderRadius: '3em', boxShadow: '2px 2px 40px 2px gray' }}>
+                <Stack direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundImage: bg ? 'linear-gradient(to bottom right,black,#3d333c 80%)' : 'linear-gradient(to bottom right,#59fff4,#d9faf8 50%)', padding: { xs: '2em 0em', sm: '3em 0em', md: '5em 6em' }, borderRadius: '2em', boxShadow: '0px 0px 15px 0px gray' }}>
                   <Typography variant='h4' sx={{ fontFamily: 'Fredoka' }}>{weather.name},{weather.country}</Typography>
                   <Typography variant='h2' sx={{ fontFamily: 'Fredoka' }}>{weather.temp.toFixed()} {units === 'metric' ? 'C' : 'F'}</Typography>
                   <img src={weather.iconURL} alt="weatherIcon" />
