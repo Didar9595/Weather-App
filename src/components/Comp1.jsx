@@ -1,74 +1,104 @@
-import React from 'react'
-import {FaArrowDown,FaArrowUp,FaWind} from 'react-icons/fa'
-import {BiHappy} from 'react-icons/bi'
-import {MdCompress,MdOutlineWaterDrop} from 'react-icons/md'
-import { Avatar, Stack, Typography } from '@mui/material'
+import { FaArrowDown, FaArrowUp, FaWind, FaEye, FaTachometerAlt, FaTint } from 'react-icons/fa'
+import { WiHumidity } from 'react-icons/wi'
 
-const Comp1 = ({weather,units,bg}) => {
-const tempUnits=units==='metric'?'C':'F';
-const windUnits=units==='metric'?'m/s':'m/h';
+const WeatherStats = ({ weather, units, darkMode }) => {
+  const tempUnit = units === 'metric' ? 'C' : 'F'
+  const windUnit = units === 'metric' ? 'm/s' : 'mph'
 
-const cards=[
-  {
-    id:1,
-    icon:<FaArrowDown />,
-    title:"Min",
-    data:weather.temp_min.toFixed(),
-    unit:tempUnits
-  },
-  {
-    id:2,
-    icon:<FaArrowUp />,
-    title:"Max",
-    data:weather.temp_max.toFixed(),
-    unit:tempUnits
-  },
-  {
-    id:3,
-    icon:<BiHappy />,
-    title:"Feels Like",
-    data:weather.feels_like.toFixed(),
-    unit:tempUnits
-  },
-  {
-    id:4,
-    icon:<MdCompress />,
-    title:"Pressure",
-    data:weather.pressure,
-    unit:"hPa"
-  },
-  {
-    id:5,
-    icon:<MdOutlineWaterDrop />,
-    title:"Humidity",
-    data:weather.humidity,
-    unit:"%"
-  },
-  {
-    id:6,
-    icon:<FaWind />,
-    title:"Wind Speed",
-    data:weather.speed,
-    unit:windUnits
-  },
-];
-  
+  const getWindDirection = (deg) => {
+    const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+    return dirs[Math.round(deg / 45) % 8]
+  }
 
-return (
-   <Stack sx={{display:'grid',gridTemplateColumns:{xs:'repeat(2,1fr)',md:'repeat(3,1fr)'},gap:{xs:'1.5em',md:'2em'}}}>
+  const getHumidityLabel = (h) => {
+    if (h < 30) return { label: 'Dry', color: '#f59e0b' }
+    if (h < 60) return { label: 'Comfortable', color: '#10b981' }
+    if (h < 80) return { label: 'Humid', color: '#3b82f6' }
+    return { label: 'Very Humid', color: '#8b5cf6' }
+  }
+
+  const getPressureLabel = (p) => {
+    if (p < 1000) return 'Low pressure'
+    if (p < 1013) return 'Below normal'
+    if (p < 1020) return 'Normal'
+    return 'High pressure'
+  }
+
+  const humidityInfo = getHumidityLabel(weather.humidity)
+
+  const stats = [
     {
-      cards.map(({id,icon,title,data,unit})=>(
-        <Stack key={id} sx={{backgroundImage:bg?'linear-gradient(to bottom right,black,#3d333c 60%)':'linear-gradient(to bottom right,#59fff4,#d9faf8 50%)',boxShadow:'0px 0px 15px 0px gray',widht:'fit-content',height:'fit-content',borderRadius:'1em',padding:'1em 1em',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-        <Stack direction='row' spacing={0.8} sx={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-           {icon}
-           <Typography sx={{fontFamily:'Fredoka',fontSize:'1.4rem',fontWeight:'bold'}}>{title}</Typography>
-        </Stack>
-        <Typography sx={{fontFamily:'Fredoka',fontSize:'1.2rem'}}>{data} {unit}</Typography>
-     </Stack>
-      ))
-    }
-    </Stack>
+      icon: <FaArrowDown size={18} />,
+      label: 'Min Temp',
+      value: `${weather.temp_min.toFixed()}°${tempUnit}`,
+      sub: 'Today\'s low',
+      accent: '#60a5fa',
+    },
+    {
+      icon: <FaArrowUp size={18} />,
+      label: 'Max Temp',
+      value: `${weather.temp_max.toFixed()}°${tempUnit}`,
+      sub: 'Today\'s high',
+      accent: '#f97316',
+    },
+    {
+      icon: <FaTint size={18} />,
+      label: 'Humidity',
+      value: `${weather.humidity}%`,
+      sub: humidityInfo.label,
+      accent: humidityInfo.color,
+      progress: weather.humidity,
+    },
+    {
+      icon: <FaTachometerAlt size={18} />,
+      label: 'Pressure',
+      value: `${weather.pressure} hPa`,
+      sub: getPressureLabel(weather.pressure),
+      accent: '#a78bfa',
+    },
+    {
+      icon: <FaWind size={18} />,
+      label: 'Wind Speed',
+      value: `${weather.speed} ${windUnit}`,
+      sub: weather.deg ? `${getWindDirection(weather.deg)} direction` : 'Variable',
+      accent: '#34d399',
+    },
+    {
+      icon: <FaEye size={18} />,
+      label: 'Feels Like',
+      value: `${weather.feels_like.toFixed()}°${tempUnit}`,
+      sub: weather.feels_like < weather.temp ? 'Colder than actual' : 'Warmer than actual',
+      accent: '#fb7185',
+    },
+  ]
+
+  return (
+    <div className="stats-panel">
+      <h2 className="stats-heading">Current Conditions</h2>
+      <div className="stats-grid">
+        {stats.map((stat, i) => (
+          <div key={i} className="stat-card glass-card" style={{ '--accent': stat.accent }}>
+            <div className="stat-icon" style={{ color: stat.accent }}>
+              {stat.icon}
+            </div>
+            <div className="stat-content">
+              <span className="stat-label">{stat.label}</span>
+              <span className="stat-value">{stat.value}</span>
+              <span className="stat-sub">{stat.sub}</span>
+            </div>
+            {stat.progress !== undefined && (
+              <div className="progress-bar-wrap">
+                <div
+                  className="progress-bar-fill"
+                  style={{ width: `${stat.progress}%`, background: stat.accent }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
 
-export default Comp1
+export default WeatherStats

@@ -1,12 +1,11 @@
-import React from 'react'
-import { Stack, Typography } from '@mui/material'
-
-const Footer = () => {
+const Footer = ({ darkMode }) => {
   return (
-    <Stack sx={{marginTop:'2em',display:'flex',flexDirection:'column',width:'100%',alignItems:'center',color:'black'}}>
-       <Typography sx={{fontWeight:'bold', fontFamily:'Fredoka'}}>Copyright &copy; 2024. All rights reserved.</Typography>
-       <Typography sx={{fontWeight:'bold', fontFamily:'Fredoka'}}>Created and Maintained by Didar Abbas</Typography>
-    </Stack>
+    <footer className="footer">
+      <p className="footer-text">
+        © {new Date().getFullYear()} SkyView · Crafted by <span className="footer-author">Didar Abbas</span>
+      </p>
+      <p className="footer-powered">Powered by OpenWeatherMap</p>
+    </footer>
   )
 }
 
